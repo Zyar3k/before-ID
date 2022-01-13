@@ -1,5 +1,10 @@
+const User = require("../models/User.js");
+const jwt = require("jsonwebtoken");
+const { StatusCodes } = require("http-status-codes");
+
 const register = async (req, res) => {
-  res.send("register user");
+  const newUser = await User.create({ ...req.body });
+  res.status(StatusCodes.CREATED).json(newUser);
 };
 
 const login = async (req, res) => {
