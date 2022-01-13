@@ -7,7 +7,7 @@ const getBook = async (req, res) => {
 };
 
 const createBook = async (req, res) => {
-  res.send("create book");
+  res.json(req.user);
 };
 
 const updateBook = async (req, res) => {
