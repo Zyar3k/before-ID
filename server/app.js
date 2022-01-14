@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8888;
 // connect to the database
 const connectDB = require("./db/connect");
 // authenticate the user
-const authenticateUser = require("./middleware/authentication");
+// const authenticateUser = require("./middleware/authentication");
 
 // routes
 const authRouter = require("./routes/auth");
@@ -26,7 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-app.use("/api/books", authenticateUser, booksRouter);
+// app.use("/api/books", authenticateUser, booksRouter);
+app.use("/api/books", booksRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
