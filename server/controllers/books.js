@@ -11,7 +11,13 @@ const getAllBooks = async (req, res) => {
 };
 
 const getBook = async (req, res) => {
-  res.send("get book");
+  const {
+    user: { userId },
+    params: { id: bookId },
+  } = req;
+  const book = await Book.findOne({ _id: bookId, createdBy: userId });
+  if (!book) throw new NotFoundError(`Book with id ${bookId} not found`);
+  res.status(StatusCodes.OK).json({ book });
 };
 
 const createBook = async (req, res) => {
