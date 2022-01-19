@@ -6,6 +6,7 @@ const { UnauthenticatedError, BadRequestError } = require("../errors");
 const register = async (req, res) => {
   const newUser = await User.create({ ...req.body });
   const token = newUser.createJWT();
+
   res.status(StatusCodes.CREATED).json({ user: { name: newUser.name }, token });
 };
 
@@ -26,6 +27,7 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid email or password");
   }
   const token = user.createJWT();
+
   res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 };
 

@@ -3,7 +3,11 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllBooks = async (req, res) => {
-  res.send("get all books");
+  const books = await Book.find({ createdBy: req.user.userId }).sort(
+    "createdAt"
+  );
+
+  res.status(StatusCodes.OK).json({ count: books.length, books });
 };
 
 const getBook = async (req, res) => {
