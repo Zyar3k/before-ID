@@ -3,9 +3,10 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllBooks = async (req, res) => {
-  const books = await Book.find({ createdBy: req.user.userId }).sort(
-    "createdAt"
-  );
+  // const books = await Book.find({ createdBy: req.user.userId }).sort(
+  //   "createdAt"
+  // );
+  const books = await Book.find().sort("createdAt");
 
   res.status(StatusCodes.OK).json({ count: books.length, books });
 };
@@ -45,7 +46,13 @@ const updateBook = async (req, res) => {
 };
 
 const deleteBook = async (req, res) => {
-  res.send("delete book");
+  const {
+    user: { userId },
+    params: { id: bookId },
+  } = req;
+  const book = await Book.findOneAndDelete({ _id: bookId, createdBy: userId });
+  if (!book) throw new NotFoundError(`Book with id ${bookId} not found`);
+  res.status(StatusCodes.OK).send("Book deleted successfully");
 };
 
 module.exports = {
