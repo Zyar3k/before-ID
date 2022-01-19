@@ -27,7 +27,21 @@ const createBook = async (req, res) => {
 };
 
 const updateBook = async (req, res) => {
-  res.send("update book");
+  const {
+    body: { title, author, list, readed, available, link, page, desc },
+    user: { userId },
+    params: { id: bookId },
+  } = req;
+  if (!title && !author && !list && !readed && !available && !link && !page)
+    throw new BadRequestError("Please provide at least one field to update");
+
+  const book = await Book.findOneAndUpdate(
+    { _id: bookId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!book) throw new NotFoundError(`Book with id ${bookId} not found`);
+  res.status(StatusCodes.OK).json({ book });
 };
 
 const deleteBook = async (req, res) => {
